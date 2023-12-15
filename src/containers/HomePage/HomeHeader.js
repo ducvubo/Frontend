@@ -6,7 +6,6 @@ import { FormattedMessage } from "react-intl";
 import { LANGUAGES } from "../../utils";
 
 import { changeLanguageApp } from "../../store/actions";
-import { lang } from "moment/moment";
 
 class HomeHeader extends Component {
   changeLanguage = (language) => {
@@ -75,7 +74,7 @@ class HomeHeader extends Component {
                   VN
                 </span>
               </div>
-              <div className={language === LANGUAGES.VI ? 'language-en active' : 'language-en'}>
+              <div className={language === LANGUAGES.EN ? 'language-en active' : 'language-en'}>
                 <span onClick={() => this.changeLanguage(LANGUAGES.EN)}>
                   EN
                 </span>
