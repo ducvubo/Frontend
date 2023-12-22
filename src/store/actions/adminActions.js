@@ -5,9 +5,11 @@ import {
   getAllUsers,
   deleteUserService,
   editUserService,
-  getTopDoctorHomeService
+  getTopDoctorHomeService,
+  getAllDoctors,
+  saveDetailDoctorService
 } from "../../services/userService";
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 // export const fetchGenderStart = () => ({
 //     type: actionTypes.FETCH_GENDER_START
 // })
@@ -84,7 +86,7 @@ export const createNewUser = (data) => {
     try {
       let res = await createNewUserService(data);
       if (res && res.errCode === 0) {
-        toast.success("Thêm người dùng thành công!")
+        toast.success("Thêm người dùng thành công!");
         dispatch(saveUserSuccess(res.data));
         dispatch(fetchAllUserStart());
       } else {
@@ -110,11 +112,11 @@ export const fetchAllUserStart = () => {
       if (res && res.errCode === 0) {
         dispatch(fetchAllUserSuccess(res.users.reverse()));
       } else {
-      toast.error("Lấy danh sách người dùng không thành công!")
+        toast.error("Lấy danh sách người dùng không thành công!");
         dispatch(fetchAllUserFailed());
       }
     } catch (e) {
-      toast.error("Lấy danh sách người dùng không thành công!")
+      toast.error("Lấy danh sách người dùng không thành công!");
       dispatch(fetchAllUserFailed());
       console.log("fetchAllUserFailed error: ", e);
     }
@@ -132,15 +134,15 @@ export const deleteAUser = (userId) => {
     try {
       let res = await deleteUserService(userId);
       if (res && res.errCode === 0) {
-        toast.success("Xóa người dùng thành công!")
+        toast.success("Xóa người dùng thành công!");
         dispatch(saveUserSuccess(res.data));
         dispatch(fetchAllUserStart());
       } else {
-        toast.error("Xóa người dùng không thành công!")
+        toast.error("Xóa người dùng không thành công!");
         dispatch(saveUserFailed());
       }
     } catch (e) {
-      toast.error("Xóa người dùng không thành công!")
+      toast.error("Xóa người dùng không thành công!");
       dispatch(saveUserFailed());
       console.log("saveUserFailed error: ", e);
     }
@@ -157,15 +159,15 @@ export const editAUser = (data) => {
     try {
       let res = await editUserService(data);
       if (res && res.errCode === 0) {
-        toast.success("Sửa người dùng thành công!")
+        toast.success("Sửa người dùng thành công!");
         dispatch(editUserSuccess());
         dispatch(fetchAllUserStart());
       } else {
-        toast.error("Sửa người dùng không thành công!")
+        toast.error("Sửa người dùng không thành công!");
         dispatch(editUserFailed());
       }
     } catch (e) {
-      toast.error("Sửa người dùng không thành công!")
+      toast.error("Sửa người dùng không thành công!");
       dispatch(editUserFailed());
       console.log("editUserFailed error: ", e);
     }
@@ -181,22 +183,70 @@ export const editUserFailed = () => ({
 export const fetchTopDoctor = () => {
   return async (dispatch, getState) => {
     try {
-    let res = await getTopDoctorHomeService('')
-    if(res && res.errCode === 0){
-      dispatch({
-        type: actionTypes.FETCH_TOP_DOCTOR_SUCCESS,
-        dataDoctors: res.data
-      })
-    }else{
-      dispatch({
-        type: actionTypes.FETCH_TOP_DOCTOR_FAILDED,
-      })
-    }
+      let res = await getTopDoctorHomeService("");
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_TOP_DOCTORS_SUCCESS,
+          dataDoctors: res.data,
+        });
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_TOP_DOCTORS_FAILDED,
+        });
+      }
     } catch (e) {
-      console.log('FETCH_ALL_USERS_FAILDED: ',e)
+      console.log("FETCH_ALL_USERS_FAILDED: ", e);
       dispatch({
-        type: actionTypes.FETCH_TOP_DOCTOR_FAILDED,
-      }) 
+        type: actionTypes.FETCH_TOP_DOCTORS_FAILDED,
+      });
     }
   };
-}
+};
+
+export const fetchAllDoctor = () => {
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllDoctors();
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_ALL_DOCTORS_SUCCESS,
+          dataDr: res.data,
+        });
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_ALL_DOCTORS_FAILDED,
+        });
+      }
+    } catch (e) {
+      console.log("FETCH_ALL_USERS_FAILDED: ", e);
+      dispatch({
+        type: actionTypes.FETCH_ALL_DOCTORS_FAILDED,
+      });
+    }
+  };
+};
+export const saveDetailDoctor = (data) => {
+  return async (dispatch, getState) => {
+    try {
+      let res = await saveDetailDoctorService(data);
+      if (res && res.errCode === 0) {
+        toast.success("Thêm giới thiệu bác sĩ thành công!");
+        dispatch({
+          type: actionTypes.SAVE_DETAIL_DOCTOR_SUCCESS,
+
+        });
+      } else {
+      toast.error("Thêm giới thiệu bác sĩ không thành công!");
+        dispatch({
+          type: actionTypes.SAVE_DETAIL_DOCTOR_FAILDED,
+        });
+      }
+    } catch (e) {
+      toast.error("Thêm giới thiệu bác sĩ không thành công!");
+      console.log("SAVE_DETAIL_DOCTOR_FAILDED: ", e);
+      dispatch({
+        type: actionTypes.SAVE_DETAIL_DOCTOR_FAILDED,
+      });
+    }
+  };
+};
