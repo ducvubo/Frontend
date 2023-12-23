@@ -7,7 +7,7 @@ import {
   editUserService,
   getTopDoctorHomeService,
   getAllDoctors,
-  saveDetailDoctorService
+  saveDetailDoctorService,
 } from "../../services/userService";
 import { toast } from "react-toastify";
 // export const fetchGenderStart = () => ({
@@ -233,10 +233,9 @@ export const saveDetailDoctor = (data) => {
         toast.success("Thêm giới thiệu bác sĩ thành công!");
         dispatch({
           type: actionTypes.SAVE_DETAIL_DOCTOR_SUCCESS,
-
         });
       } else {
-      toast.error("Thêm giới thiệu bác sĩ không thành công!");
+        toast.error("Thêm giới thiệu bác sĩ không thành công!");
         dispatch({
           type: actionTypes.SAVE_DETAIL_DOCTOR_FAILDED,
         });
@@ -246,6 +245,29 @@ export const saveDetailDoctor = (data) => {
       console.log("SAVE_DETAIL_DOCTOR_FAILDED: ", e);
       dispatch({
         type: actionTypes.SAVE_DETAIL_DOCTOR_FAILDED,
+      });
+    }
+  };
+};
+
+export const fetchAllScheduleTime = () => {
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllCodeService("TIME");
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_ALLCODE_SCHEDULE_TIME_SUCCESS,
+          dataTime: res.data,
+        });
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_ALLCODE_SCHEDULE_TIME_FAILDED,
+        });
+      }
+    } catch (e) {
+      console.log("FETCH_ALLCODE_SCHEDULE_TIME_FAILDED: ", e);
+      dispatch({
+        type: actionTypes.FETCH_ALLCODE_SCHEDULE_TIME_FAILDED,
       });
     }
   };
