@@ -98,7 +98,7 @@ class ManageSchedule extends Component {
     }
     //let formatedDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER);
     // = moment(currentDate).unix()
-    let formatedDate  = new Date(currentDate).getTime()
+    let formatedDate  = new Date(currentDate).getTime()//tra ra 1 so nguyen integer
 
     if (rangeTime && rangeTime.length > 0) {
       let selectedTime = rangeTime.filter((item) => item.isSelected === true);
@@ -120,11 +120,19 @@ class ManageSchedule extends Component {
       doctorId: selectedDoctor.value,
       formatedDate: formatedDate
     })
+    if(res && res.errCode === 0){
+      toast.success("Lưu thông tin thành công!!!")
+    }else{
+      toast.error("Lưu không thành công!!!")
+      console.log("error saveBulkScheduleDoctor: ",res)
+    }
     
   };
   render() {
     let { rangeTime } = this.state;
     let { language } = this.props;
+    let yesterday = new Date(new Date().setDate(new Date().getDate()-1));
+
     console.log(rangeTime);
     return (
       <div className="manage-schedule-container">
@@ -153,7 +161,7 @@ class ManageSchedule extends Component {
                 onChange={this.handleOnchangeDatePicker}
                 className="form-control"
                 value={this.state.currentDate[0]}
-                minDate={new Date()}
+                minDate={yesterday}
               />
             </div>
             <div className="col-12 pick-hour-container">

@@ -4,11 +4,14 @@ import HomeHeader from "../../HomePage/HomeHeader";
 import "./DetailDoctor.scss";
 import { getDetailInforDoctor } from "../../../services/userService";
 import { LANGUAGES } from "../../../utils";
+import DoctorSchedule from "./DoctorSchedule";
+
 class DetailDoctor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      DetailDoctor: {},
+      detailDoctor: {},
+      currentDoctorId: -1,
     };
   }
 
@@ -19,10 +22,14 @@ class DetailDoctor extends Component {
       this.props.match.params.id
     ) {
       let id = this.props.match.params.id; //lấy id trên đường link url
+      this.setState({
+        currentDoctorId: id
+      })
       let res = await getDetailInforDoctor(id);
       if (res && res.errCode === 0) {
         this.setState({
-          DetailDoctor: res.data,
+          detailDoctor: res.data,
+         
         });
       }
     }
@@ -30,13 +37,13 @@ class DetailDoctor extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {}
   render() {
-    let {language} = this.props
-    let { DetailDoctor } = this.state;
-    let nameEn = ''
-    let nameVi = ''
-    if (DetailDoctor && DetailDoctor.positionData) {
-       nameEn = `${DetailDoctor.positionData.valueVi}, ${DetailDoctor.lastName} ${DetailDoctor.firstName} `;
-       nameVi = `${DetailDoctor.positionData.valueEn}, ${DetailDoctor.firstName} ${DetailDoctor.lastName}`;
+    let { language } = this.props;
+    let { detailDoctor } = this.state;
+    let nameEn = "";
+    let nameVi = "";
+    if (detailDoctor && detailDoctor.positionData) {
+      nameEn = `${detailDoctor.positionData.valueVi}, ${detailDoctor.lastName} ${detailDoctor.firstName} `;
+      nameVi = `${detailDoctor.positionData.valueEn}, ${detailDoctor.firstName} ${detailDoctor.lastName}`;
     }
     return (
       <>
@@ -47,7 +54,7 @@ class DetailDoctor extends Component {
               className="content-left"
               style={{
                 backgroundImage: `url(${
-                  DetailDoctor.image ? DetailDoctor.image : ""
+                  detailDoctor.image ? detailDoctor.image : ""
                 })`,
               }}
             ></div>
@@ -56,23 +63,36 @@ class DetailDoctor extends Component {
                 {language === LANGUAGES.VI ? nameVi : nameEn}
               </div>
               <div className="down">
-                {DetailDoctor &&
-                  DetailDoctor.Markdown &&
-                  DetailDoctor.Markdown.description && (
-                    <span>{DetailDoctor.Markdown.description}</span>
+                {detailDoctor &&
+                  detailDoctor.Markdown &&
+                  detailDoctor.Markdown.description && (
+                    <span>{detailDoctor.Markdown.description}</span>
                   )}
               </div>
             </div>
           </div>
-          <div className="schedule-doctor"></div>
-          <div className="detail-infor-doctor">
-            {DetailDoctor && DetailDoctor.Markdown && DetailDoctor.Markdown.contentHTML
-              && 
-              <div>
-                <div dangerouslySetInnerHTML={{__html:  DetailDoctor.Markdown.contentHTML}}></div>
+          <div className="schedule-doctor">
+            <div className="content-left">
+              <DoctorSchedule
+              doctorIdFromParent = {this.state.currentDoctorId}
+              />
+            </div>
+            <div className="content-right">
 
-              </div>
-            }
+            </div>
+          </div>
+          <div className="detail-infor-doctor">
+            {detailDoctor &&
+              detailDoctor.Markdown &&
+              detailDoctor.Markdown.contentHTML && (
+                <div>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: detailDoctor.Markdown.contentHTML,//hien thi đoạn code html
+                    }}
+                  ></div>
+                </div>
+              )}
           </div>
           <div className="comment-doctor"></div>
         </div>
@@ -84,7 +104,6 @@ class DetailDoctor extends Component {
 const mapStateToProps = (state) => {
   return {
     language: state.app.language,
-
   };
 };
 
