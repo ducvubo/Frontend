@@ -62,14 +62,29 @@
     "title": "Manage doctor's examination plan",
     "choose-doctor": "Choose doctor",
     "choose-date": "Choose date",
-    "save":"Save infor"
+    "save": "Save infor"
   },
-  "patient":{
-    "detail-doctor":{
-      "schedule":"Schedule",
-      "no-schedule":"There are no appointments available at this time, please choose another time",
-      "choose":"Choose ",
-      "book-free":" and book (free)"
+  "patient": {
+    "detail-doctor": {
+      "schedule": "Schedule",
+      "no-schedule": "There are no appointments available at this time, please choose another time",
+      "choose": "Choose ",
+      "book-free": " and book (free)"
+    }
+  },
+  "admin": {
+    "manage-doctor": {
+      "title": "Create more information doctors",
+      "select-doctor": "Select doctor",
+      "intro": "Introduction",
+      "add": "Create infor",
+      "save": "Save infor",
+      "price":"Price",
+      "payment":"Payment",
+      "province":"Province",
+      "nameClinic":"Clinic's name",
+      "addressClinic":"Clinic's address",
+      "note":"Note"
     }
   }
 }
